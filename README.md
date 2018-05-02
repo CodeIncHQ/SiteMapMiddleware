@@ -1,6 +1,6 @@
 # SiteMap middleware 
 
-[`SiteMapMiddleware`](src/SiteMapMiddleware.php) is a [PSR-15](https://www.php-fig.org/psr/psr-15/) middleware dedicated to answer `/sitemap.xml` requests. It uses [tackk/cartographer](https://github.com/tackk/cartographer) to generate the response in the [`sitemap.xml` format](https://www.sitemaps.org/protocol.html)
+[`SiteMapMiddleware`](src/SiteMapMiddleware.php) is a [PSR-15](https://www.php-fig.org/psr/psr-15/) middleware dedicated to answer `/sitemap.xml` requests. It uses [tackk/cartographer](https://github.com/tackk/cartographer) to generate the response in the [`sitemap.xml` format](https://www.sitemaps.org/protocol.html).
 
 ## Installation
 
