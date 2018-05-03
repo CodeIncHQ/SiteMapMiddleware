@@ -1,5 +1,5 @@
 {
-  "name": "codeinc/sitemap-middlware",
+  "name": "codeinc/sitemap-middleware",
   "version": "1.0.1",
   "description": "A PSR-15 middleware to answer /sitemap.xml requests",
   "homepage": "https://github.com/CodeIncHQ/SiteMapMiddleware",
