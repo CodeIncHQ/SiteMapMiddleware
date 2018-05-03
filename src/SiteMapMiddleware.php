@@ -37,8 +37,8 @@ use Tackk\Cartographer\Sitemap;
  * @uses Sitemap <https://github.com/tackk/cartographer>
  * @package CodeInc\SiteMapMiddleware
  * @author Joan Fabrégat <joan@codeinc.fr>
- * @license MIT <https://github.com/CodeIncHQ/Psr15Middlewares/blob/master/LICENSE>
- * @link https://github.com/CodeIncHQ/Psr15Middlewares
+ * @license MIT <https://github.com/CodeIncHQ/SiteMapMiddleware/blob/master/LICENSE>
+ * @link https://github.com/CodeIncHQ/SiteMapMiddleware
  */
 class SiteMapMiddleware extends Sitemap implements MiddlewareInterface
 {

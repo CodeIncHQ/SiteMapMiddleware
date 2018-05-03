@@ -32,6 +32,8 @@ use Tackk\Cartographer\Sitemap;
  * @see SiteMapMiddleware
  * @package CodeInc\SiteMapMiddleware\Assets
  * @author Joan Fabrégat <joan@codeinc.fr>
+ * @license MIT <https://github.com/CodeIncHQ/SiteMapMiddleware/blob/master/LICENSE>
+ * @link https://github.com/CodeIncHQ/SiteMapMiddleware
  */
 class SiteMapResponse extends XmlResponse
 {
