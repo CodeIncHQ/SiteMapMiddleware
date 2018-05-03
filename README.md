@@ -5,10 +5,10 @@
 
 ## Installation
 
-This library is available through [Packagist](https://packagist.org/packages/codeinc/sitemap-middlware) and can be installed using [Composer](https://getcomposer.org/): 
+This library is available through [Packagist](https://packagist.org/packages/codeinc/sitemap-middleware) and can be installed using [Composer](https://getcomposer.org/): 
 
 ```bash
-composer require codeinc/sitemap-middlware
+composer require codeinc/sitemap-middleware
 ```
 
 :speech_balloon: This library is extracted from the now deprecated [codeinc/psr15-middlewares](https://packagist.org/packages/codeinc/psr15-middlewares) package.
