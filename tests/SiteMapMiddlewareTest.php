@@ -21,11 +21,11 @@
 //
 declare(strict_types=1);
 namespace CodeInc\SiteMapMiddleware\Tests\CustomResponses;
+use CodeInc\MiddlewareTestKit\BlankResponse;
+use CodeInc\MiddlewareTestKit\FakeRequestHandler;
+use CodeInc\MiddlewareTestKit\FakeServerRequest;
 use CodeInc\SiteMapMiddleware\Assets\SiteMapResponse;
 use CodeInc\SiteMapMiddleware\SiteMapMiddleware;
-use CodeInc\SiteMapMiddleware\Tests\Assets\BlankResponse;
-use CodeInc\SiteMapMiddleware\Tests\Assets\FakeRequestHandler;
-use CodeInc\SiteMapMiddleware\Tests\Assets\FakeServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Tackk\Cartographer\ChangeFrequency;
@@ -42,63 +42,39 @@ class SiteMapMiddlewareTest extends TestCase
 {
     public function testRegularRequest():void
     {
-        $middleware = $this->getMiddleware();
+        $siteMapMiddleware = new SiteMapMiddleware();
+
         $request = FakeServerRequest::getSecureServerRequestWithPath('/test');
-        self::assertFalse($middleware->isSiteMapRequest($request));
-        $response = $middleware->process(
+        self::assertFalse($siteMapMiddleware->isSiteMapRequest($request));
+        $response = $siteMapMiddleware->process(
             $request,
             new FakeRequestHandler()
         );
+
         self::assertInstanceOf(ResponseInterface::class, $response);
         self::assertInstanceOf(BlankResponse::class, $response);
     }
 
     public function testSiteMapRequest():void
     {
-        $middleware = $this->getMiddleware();
-        $request = FakeServerRequest::getSecureServerRequestWithPath('/sitemap.xml');
-        self::assertTrue($middleware->isSiteMapRequest($request));
-        $response = $middleware->process(
-            $request,
-            new FakeRequestHandler()
-        );
-        $this->assertSiteMapResponse($response);
-    }
+        foreach ([SiteMapMiddleware::DEFAULT_URI_PATH, '/custom-site-map.xml'] as $siteMapUriPath) {
+            $siteMapMiddleware = new SiteMapMiddleware($siteMapUriPath);
+            $siteMapMiddleware->add('http://foo.com', '2005-01-02', ChangeFrequency::WEEKLY, 1.0);
+            $siteMapMiddleware->add('http://foo.com/about', '2005-01-01');
 
-    public function testSiteMapCustomRequest():void
-    {
-        $middleware = $this->getMiddleware();
-        $middleware->addSiteMapUriPath('/test/sitemap.xml');
-        $request = FakeServerRequest::getSecureServerRequestWithPath('/test/sitemap.xml');
-        self::assertTrue($middleware->isSiteMapRequest($request));
-        $response = $middleware->process(
-            $request,
-            new FakeRequestHandler()
-        );
-        $this->assertSiteMapResponse($response);
-    }
+            $request = FakeServerRequest::getSecureServerRequestWithPath($siteMapUriPath);
+            self::assertTrue($siteMapMiddleware->isSiteMapRequest($request));
+            $response = $siteMapMiddleware->process(
+                $request,
+                new FakeRequestHandler()
+            );
 
-    /**
-     * @param ResponseInterface $response
-     */
-    private function assertSiteMapResponse(ResponseInterface $response):void
-    {
-        self::assertInstanceOf(ResponseInterface::class, $response);
-        self::assertInstanceOf(SiteMapResponse::class, $response);
+            self::assertInstanceOf(ResponseInterface::class, $response);
+            self::assertInstanceOf(SiteMapResponse::class, $response);
 
-        $responseBody = $response->getBody()->__toString();
-        self::assertRegExp('#<loc>http://foo\\.com</loc>#ui', $responseBody);
-        self::assertRegExp('#<loc>http://foo.com/about</loc>#ui', $responseBody);
-    }
-
-    /**
-     * @return SiteMapMiddleware
-     */
-    private function getMiddleware():SiteMapMiddleware
-    {
-        $middleware = new SiteMapMiddleware();
-        $middleware->add('http://foo.com', '2005-01-02', ChangeFrequency::WEEKLY, 1.0);
-        $middleware->add('http://foo.com/about', '2005-01-01');
-        return $middleware;
+            $responseBody = $response->getBody()->__toString();
+            self::assertRegExp('#<loc>http://foo\\.com</loc>#ui', $responseBody);
+            self::assertRegExp('#<loc>http://foo.com/about</loc>#ui', $responseBody);
+        }
     }
 }
