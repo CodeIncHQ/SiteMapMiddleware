@@ -42,32 +42,32 @@ use Tackk\Cartographer\Sitemap;
  */
 class SiteMapMiddleware extends Sitemap implements MiddlewareInterface
 {
-    /**
-     * @var array
-     */
-    private $siteMapUriPaths = ['/sitemap.xml'];
+    public const DEFAULT_URI_PATH = '/sitemap.xml';
 
     /**
-     * @param string $path
-     * @return bool
+     * @var string
      */
-    public function addSiteMapUriPath(string $path):bool
+    private $uriPath;
+
+    /**
+     * SiteMapMiddleware constructor.
+     *
+     * @param string $uriPath
+     */
+    public function __construct(string $uriPath = self::DEFAULT_URI_PATH)
     {
-        if (!in_array($path, $this->siteMapUriPaths)) {
-            $this->siteMapUriPaths[] = $path;
-            return true;
-        }
-        return false;
+        parent::__construct();
+        $this->uriPath = $uriPath;
     }
 
     /**
-     * Returns the lists of URI paths for which the robots.txt file is returned.
+     * Returne the URI path for which the robots.txt file is returned.
      *
-     * @return array
+     * @return string
      */
-    public function getSiteMapUriPaths():array
+    public function getUriPath():string
     {
-        return $this->siteMapUriPaths;
+        return $this->uriPath;
     }
 
     /**
@@ -94,6 +94,6 @@ class SiteMapMiddleware extends Sitemap implements MiddlewareInterface
      */
     public function isSiteMapRequest(ServerRequestInterface $request):bool
     {
-        return in_array($request->getUri()->getPath(), $this->siteMapUriPaths);
+        return $request->getUri()->getPath() == $this->uriPath;
     }
 }
